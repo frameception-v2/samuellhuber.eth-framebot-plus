@@ -22,17 +22,76 @@ import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE } from "~/lib/constants";
 
-function ExampleCard() {
+function DemoInterface() {
+  const [prompt, setPrompt] = useState("");
+  const [selectedStyle, setSelectedStyle] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleGenerate = useCallback(async () => {
+    if (!prompt) return;
+    
+    setLoading(true);
+    try {
+      // Simulate AI generation
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      sdk.actions.openUrl(`https://framebot-plus.vercel.app/generate?prompt=${encodeURIComponent(prompt)}&style=${selectedStyle}`);
+    } finally {
+      setLoading(false);
+    }
+  }, [prompt, selectedStyle]);
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Welcome to the Frame Template</CardTitle>
+        <CardTitle>🧩 Framebot Plus</CardTitle>
         <CardDescription>
-          This is an example card that you can customize or remove
+          Generate custom Farcaster Frames with AI
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <Label>Place content in a Card here.</Label>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <Label>Describe your frame idea</Label>
+          <textarea
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            className="w-full p-2 border rounded-lg bg-background text-foreground"
+            placeholder="e.g. 'A voting frame for my DAO with...'"
+            rows={3}
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label>Select style</Label>
+          <div className="grid grid-cols-2 gap-2">
+            {FRAME_STYLES.map((style) => (
+              <button
+                key={style}
+                onClick={() => setSelectedStyle(style)}
+                className={`p-2 text-sm rounded-lg transition-colors ${
+                  selectedStyle === style 
+                    ? "bg-purple-600 text-white" 
+                    : "bg-muted hover:bg-accent"
+                }`}
+              >
+                {style}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <PurpleButton 
+          onClick={handleGenerate}
+          disabled={loading || !prompt}
+          isLoading={loading}
+        >
+          {loading ? "Generating..." : "Build My Frame"}
+        </PurpleButton>
+
+        <p className="text-sm text-muted-foreground">
+          Powered by AI - Supports Frame v2 features like:
+          <br />
+          • State management • Transaction flows • Multi-step forms
+        </p>
       </CardContent>
     </Card>
   );
@@ -140,7 +199,7 @@ export default function Frame() {
         <h1 className="text-2xl font-bold text-center mb-4 text-gray-700 dark:text-gray-300">
           {PROJECT_TITLE}
         </h1>
-        <ExampleCard />
+        <DemoInterface />
       </div>
     </div>
   );

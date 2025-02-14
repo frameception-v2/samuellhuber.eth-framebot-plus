@@ -1,3 +1,10 @@
-export const PROJECT_ID = 'farcaster-frames-template';
-export const PROJECT_TITLE = "Farcaster Frames Template";
-export const PROJECT_DESCRIPTION = "A Farcaster Frames v2 Template by hellno";
+export const PROJECT_ID = 'framebot-plus';
+export const PROJECT_TITLE = "Framebot Plus";
+export const PROJECT_DESCRIPTION = "AI-Powered Farcaster Frame Generator";
+export const FRAME_STYLES = [
+  "Modern Minimalist",
+  "Cyberpunk",
+  "Retro Wave",
+  "Organic Shapes",
+  "Holographic"
+];
